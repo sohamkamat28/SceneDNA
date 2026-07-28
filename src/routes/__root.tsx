@@ -7,10 +7,9 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import type { ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AuthProvider } from "../lib/auth";
 import { Toaster } from "../components/ui/sonner";
 
@@ -40,9 +39,6 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
-  useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -96,8 +92,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "SceneDNA — Reverse Engineer any  image" },
       { name: "twitter:description", content: "Turn one reference image into a reusable visual system: composition, lighting, colour, camera language and a full prompt package." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/218a42a0-1182-4c30-8c8d-b6a85aced288/id-preview-839ab6d3--ca680cce-71ef-4e12-b404-d6edf99a814e.lovable.app-1785089044340.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/218a42a0-1182-4c30-8c8d-b6a85aced288/id-preview-839ab6d3--ca680cce-71ef-4e12-b404-d6edf99a814e.lovable.app-1785089044340.png" },
     ],
     links: [
       {
@@ -140,4 +134,3 @@ function RootComponent() {
     </QueryClientProvider>
   );
 }
-
