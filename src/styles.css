@@ -1,0 +1,169 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+@import "@fontsource/instrument-sans/400.css";
+@import "@fontsource/instrument-sans/500.css";
+@import "@fontsource/instrument-sans/600.css";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+
+/*
+ * SceneDNA design system.
+ * Dark-first, editorial, technical. Solid colours only — no gradients anywhere.
+ * Accent (lime) is reserved for primary CTAs, active states, focus and progress.
+ */
+
+@theme inline {
+  --font-sans:
+    "Instrument Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 10px;
+  --radius-2xl: 10px;
+  --radius-3xl: 10px;
+  --radius-4xl: 10px;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-elevated: var(--background-elevated);
+  --color-surface: var(--surface);
+  --color-surface-strong: var(--surface-strong);
+  --color-card: var(--surface);
+  --color-card-foreground: var(--foreground);
+  --color-popover: var(--surface-strong);
+  --color-popover-foreground: var(--foreground);
+  --color-primary: var(--accent);
+  --color-primary-foreground: var(--accent-text);
+  --color-secondary: var(--surface-strong);
+  --color-secondary-foreground: var(--foreground);
+  --color-muted: var(--surface);
+  --color-muted-foreground: var(--text-muted);
+  --color-subtle: var(--text-secondary);
+  --color-accent: var(--surface-strong);
+  --color-accent-foreground: var(--foreground);
+  --color-signal: var(--accent);
+  --color-signal-foreground: var(--accent-text);
+  --color-destructive: var(--error);
+  --color-destructive-foreground: var(--foreground);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-border: var(--border-subtle);
+  --color-border-strong: var(--border-strong);
+  --color-input: var(--border-strong);
+  --color-ring: var(--accent);
+  --color-sidebar: var(--background-elevated);
+  --color-sidebar-foreground: var(--foreground);
+  --color-sidebar-primary: var(--accent);
+  --color-sidebar-primary-foreground: var(--accent-text);
+  --color-sidebar-accent: var(--surface-strong);
+  --color-sidebar-accent-foreground: var(--foreground);
+  --color-sidebar-border: var(--border-subtle);
+  --color-sidebar-ring: var(--accent);
+  --color-chart-1: var(--accent);
+  --color-chart-2: var(--success);
+  --color-chart-3: var(--warning);
+  --color-chart-4: var(--error);
+  --color-chart-5: var(--text-secondary);
+}
+
+:root {
+  --radius: 6px;
+  --background: #0b0c0c;
+  --background-elevated: #101111;
+  --surface: #151616;
+  --surface-strong: #1b1c1c;
+  --foreground: #f2f0e9;
+  --text-secondary: #aaa9a2;
+  --text-muted: #777871;
+  --border-subtle: rgba(242, 240, 233, 0.12);
+  --border-strong: rgba(242, 240, 233, 0.24);
+  --accent: #d9fb48;
+  --accent-hover: #c9ea3e;
+  --accent-text: #11120d;
+  --success: #88b98a;
+  --warning: #d0a85f;
+  --error: #cc716d;
+  color-scheme: dark;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+@layer base {
+  * {
+    border-color: var(--border-subtle);
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.55;
+  }
+
+  h1,
+  h2,
+  h3 {
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    font-weight: 500;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-text);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+}
+
+@utility mono-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+@utility tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Nearly invisible technical grid, straight lines only, no gradients. */
+@utility grid-field {
+  background-color: var(--background);
+  background-image:
+    repeating-linear-gradient(
+      to right,
+      rgba(242, 240, 233, 0.035) 0 1px,
+      transparent 1px 96px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      rgba(242, 240, 233, 0.035) 0 1px,
+      transparent 1px 96px
+    );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
