@@ -52,7 +52,6 @@ Copy `.env.example` to `.env.local` and provide your own credentials. Never comm
 | `VITE_SUPABASE_PUBLISHABLE_KEY` | Public Supabase publishable key used by the browser |
 | `SUPABASE_URL` | Supabase project URL used by server functions |
 | `SUPABASE_PUBLISHABLE_KEY` | Supabase publishable key used by server functions |
-| `SUPABASE_SERVICE_ROLE_KEY` | Server-only key for trusted database and storage operations |
 | `GEMINI_API_KEY` | Server-only Google Gemini API key |
 
 ## Commands

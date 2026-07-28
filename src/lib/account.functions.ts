@@ -48,7 +48,7 @@ export const getAccountOverview = createServerFn({ method: "GET" })
 
 export const updateAccountPreferences = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data: unknown) =>
+  .validator((data: unknown) =>
     z
       .object({
         full_name: z.string().max(80).nullable(),

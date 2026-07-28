@@ -12,13 +12,13 @@ export type PreparedImage = {
   orientation: "portrait" | "landscape" | "square";
 };
 
-export class ImagePipelineError extends Error {}
+class ImagePipelineError extends Error {}
 
 function gcd(a: number, b: number): number {
   return b === 0 ? a : gcd(b, a % b);
 }
 
-export function describeAspectRatio(width: number, height: number): string {
+function describeAspectRatio(width: number, height: number): string {
   const divisor = gcd(width, height) || 1;
   let w = Math.round(width / divisor);
   let h = Math.round(height / divisor);
@@ -50,7 +50,7 @@ export function describeAspectRatio(width: number, height: number): string {
   return `${w}:${h}`;
 }
 
-export function orientationOf(width: number, height: number) {
+function orientationOf(width: number, height: number) {
   if (Math.abs(width - height) / Math.max(width, height) < 0.02) return "square" as const;
   return width > height ? ("landscape" as const) : ("portrait" as const);
 }

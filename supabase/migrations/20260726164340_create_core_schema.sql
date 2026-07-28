@@ -54,20 +54,6 @@ CREATE POLICY "analyses_insert_own" ON public.analyses FOR INSERT TO authenticat
 CREATE POLICY "analyses_update_own" ON public.analyses FOR UPDATE TO authenticated USING (user_id = auth.uid()) WITH CHECK (user_id = auth.uid());
 CREATE POLICY "analyses_delete_own" ON public.analyses FOR DELETE TO authenticated USING (user_id = auth.uid());
 
-CREATE TABLE public.analysis_attempts (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  analysis_id UUID REFERENCES public.analyses(id) ON DELETE SET NULL,
-  outcome TEXT NOT NULL DEFAULT 'started',
-  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
-);
-CREATE INDEX analysis_attempts_user_created_idx ON public.analysis_attempts (user_id, created_at DESC);
-CREATE INDEX analysis_attempts_created_idx ON public.analysis_attempts (created_at DESC);
-GRANT SELECT ON public.analysis_attempts TO authenticated;
-GRANT ALL ON public.analysis_attempts TO service_role;
-ALTER TABLE public.analysis_attempts ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "attempts_select_own" ON public.analysis_attempts FOR SELECT TO authenticated USING (user_id = auth.uid());
-
 CREATE OR REPLACE FUNCTION public.set_updated_at()
 RETURNS TRIGGER
 LANGUAGE plpgsql

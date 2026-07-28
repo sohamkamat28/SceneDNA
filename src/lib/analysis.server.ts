@@ -1,7 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { buildAnalysisPrompt } from "@/lib/analysis-prompt.server";
 import { callGeminiJson, extractJsonObject, GeminiError, GEMINI_MODEL } from "@/lib/gemini.server";
-import { assertWithinFreeLimits, recordAttempt } from "@/lib/limits.server";
+import { assertWithinFreeLimits } from "@/lib/limits.server";
 import type { Database } from "@/integrations/supabase/types";
 import { visualPromptBlueprintSchema, type VisualPromptBlueprint } from "@/schemas/blueprint";
 import type { PromptDepth, TargetGenerator, UseCase } from "@/config/routes";
@@ -33,7 +33,7 @@ export async function runAnalysis(
   args: AnalyseArgs,
   supabase: SupabaseClient<Database>,
 ) {
-  const { attemptId } = await assertWithinFreeLimits(userId, supabase);
+  await assertWithinFreeLimits(userId, supabase);
 
   const startedAt = new Date();
   const { system, user } = buildAnalysisPrompt({
@@ -94,7 +94,6 @@ export async function runAnalysis(
       orientation: args.orientation,
       started_at: startedAt.toISOString(),
     });
-    await recordAttempt(attemptId, null, "failed");
     throw error instanceof Error ? error : new Error("Analysis failed.");
   }
 
@@ -140,8 +139,6 @@ export async function runAnalysis(
       await supabase.from("analyses").update({ source_path: path }).eq("id", row.id);
     }
   }
-
-  await recordAttempt(attemptId, row.id, "completed");
 
   return { id: row.id as string, blueprint };
 }

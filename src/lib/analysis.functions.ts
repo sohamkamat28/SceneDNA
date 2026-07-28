@@ -24,7 +24,7 @@ const analyseInput = z.object({
 
 export const analyseImage = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data: unknown) => analyseInput.parse(data))
+  .validator((data: unknown) => analyseInput.parse(data))
   .handler(async ({ data, context }) => {
     const { runAnalysis } = await import("@/lib/analysis.server");
     return runAnalysis(
@@ -53,7 +53,7 @@ export const listAnalyses = createServerFn({ method: "GET" })
 
 export const getAnalysis = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data: unknown) => z.object({ id: z.string().uuid() }).parse(data))
+  .validator((data: unknown) => z.object({ id: z.string().uuid() }).parse(data))
   .handler(async ({ data, context }) => {
     const { data: row, error } = await context.supabase
       .from("analyses")
@@ -68,7 +68,7 @@ export const getAnalysis = createServerFn({ method: "POST" })
 
 export const deleteAnalysis = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data: unknown) => z.object({ id: z.string().uuid() }).parse(data))
+  .validator((data: unknown) => z.object({ id: z.string().uuid() }).parse(data))
   .handler(async ({ data, context }) => {
     const { error } = await context.supabase.from("analyses").delete().eq("id", data.id);
     if (error) throw new Error(error.message);
