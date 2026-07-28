@@ -5,7 +5,6 @@ import { AuthShell } from "@/components/auth/AuthShell";
 import { ROUTES } from "@/config/routes";
 import { BRAND } from "@/config/brand";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/lib/auth";
 
 const TITLE = `Sign in — ${BRAND.name}`;
@@ -50,15 +49,15 @@ function LoginPage() {
   }
 
   async function onGoogle() {
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${window.location.origin}${ROUTES.app}`,
+      },
     });
-    if (result.error) {
+    if (error) {
       toast.error("Google sign-in failed. Please try again.");
-      return;
     }
-    if (result.redirected) return;
-    navigate({ to: ROUTES.app });
   }
 
   return (
@@ -90,7 +89,10 @@ function LoginPage() {
 
       <form onSubmit={onSubmit} className="space-y-4">
         <div>
-          <label htmlFor="email" className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
+          <label
+            htmlFor="email"
+            className="font-mono text-xs uppercase tracking-wider text-muted-foreground"
+          >
             Email
           </label>
           <input
@@ -106,10 +108,16 @@ function LoginPage() {
 
         <div>
           <div className="flex items-center justify-between">
-            <label htmlFor="password" className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
+            <label
+              htmlFor="password"
+              className="font-mono text-xs uppercase tracking-wider text-muted-foreground"
+            >
               Password
             </label>
-            <Link to={ROUTES.forgotPassword} className="text-xs text-muted-foreground hover:text-foreground">
+            <Link
+              to={ROUTES.forgotPassword}
+              className="text-xs text-muted-foreground hover:text-foreground"
+            >
               Forgot?
             </Link>
           </div>
