@@ -33,7 +33,7 @@ export async function runAnalysis(
   args: AnalyseArgs,
   supabase: SupabaseClient<Database>,
 ) {
-  const { attemptId } = await assertWithinFreeLimits(userId);
+  const { attemptId } = await assertWithinFreeLimits(userId, supabase);
 
   const startedAt = new Date();
   const { system, user } = buildAnalysisPrompt({
