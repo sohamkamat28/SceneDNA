@@ -3,11 +3,13 @@ import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { BRAND } from "@/config/brand";
 import { ROUTES } from "@/config/routes";
+import { CopyButton } from "@/features/blueprint/CopyButton";
 import { EXAMPLE_BLUEPRINT } from "@/features/example/example-blueprint";
-import { buildProductStyleTransferPrompt } from "@/lib/blueprint-export";
+import { buildBlueprintMarkdown, buildProductStyleTransferPrompt } from "@/lib/blueprint-export";
 import exampleReference from "@/assets/example-reference.jpg";
 
 const b = EXAMPLE_BLUEPRINT;
+const fullMarkdown = buildBlueprintMarkdown(b);
 const productStylePrompt = buildProductStyleTransferPrompt(b);
 const TITLE = `Example analysis — ${BRAND.name}`;
 const DESCRIPTION =
@@ -51,11 +53,12 @@ function Rows({ rows }: { rows: Array<[string, string]> }) {
 
 function Prompt({ label, value }: { label: string; value: string }) {
   return (
-    <div className="mt-5 first:mt-0">
-      <p className="font-mono text-xs uppercase tracking-wider text-muted-foreground">{label}</p>
-      <pre className="mt-2 whitespace-pre-wrap rounded-lg border border-border bg-surface p-4 font-mono text-xs leading-relaxed">
-        {value}
-      </pre>
+    <div className="mt-5 first:mt-0 rounded-lg border border-border bg-surface">
+      <div className="flex items-start justify-between gap-4 border-b border-border px-4 py-2.5">
+        <p className="font-mono text-xs uppercase tracking-wider text-muted-foreground">{label}</p>
+        <CopyButton value={value} label={label} />
+      </div>
+      <pre className="whitespace-pre-wrap p-4 font-mono text-xs leading-relaxed">{value}</pre>
     </div>
   );
 }
@@ -75,6 +78,22 @@ function ExamplePage() {
           <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground">
             {b.overview.one_sentence_summary}
           </p>
+
+          <div className="mt-8 flex flex-col gap-4 rounded-lg border border-border bg-surface p-5 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-sm font-medium">Copy the complete analysis</p>
+              <p className="mt-1 max-w-xl text-xs leading-relaxed text-muted-foreground">
+                Includes every analysed feature, Visual DNA attribute, variation, quality note and
+                prompt in portable Markdown.
+              </p>
+            </div>
+            <CopyButton
+              value={fullMarkdown}
+              label="full analysis as Markdown"
+              buttonText="Copy full analysis as Markdown"
+              prominent
+            />
+          </div>
 
           <img
             src={exampleReference}
